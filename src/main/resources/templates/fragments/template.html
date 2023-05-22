@@ -18,7 +18,7 @@
       <span class="navbar-brand mb-2 h1">Computer Accessories</span>
     </a>
     <div th:if="${user.isAdmin()}">
-      <a href="/admin">Панель администратора</a>
+      <a href="/admin" style="color: aliceblue">Панель администратора</a>
     </div>
     <div th:if="${user.email}">
       <button class="btn btn-danger" type="button"

@@ -21,26 +21,36 @@ public class UserController {
         model.addAttribute("user", userService.getUserByPrincipal(principal));
         return "login";
     }
+
+    @GetMapping("/profile")
+    public String profile(Principal principal,
+                          Model model) {
+        User user = userService.getUserByPrincipal(principal);
+        model.addAttribute("user", user);
+        return "profile";
+    }
+
     @GetMapping("/registration")
     public String registration(Principal principal, Model model) {
         model.addAttribute("user", userService.getUserByPrincipal(principal));
         return "registration";
     }
 
+
     @PostMapping("/registration")
     public String createUser(User user, Model model) {
-        if (!userService.createUser(user)){
-            model.addAttribute("errorMessage", "Такой пользователь уже существует");
+        if (!userService.createUser(user)) {
+            model.addAttribute("errorMessage", "Пользователь с email: " + user.getEmail() + " уже существует");
             return "registration";
         }
         return "redirect:/login";
     }
 
     @GetMapping("/user/{user}")
-    public String userInfo(@PathVariable("user") User user, Model model){
+    public String userInfo(@PathVariable("user") User user, Model model, Principal principal) {
         model.addAttribute("user", user);
+        model.addAttribute("userByPrincipal", userService.getUserByPrincipal(principal));
+        model.addAttribute("products", user.getProducts());
         return "user-info";
-
     }
-
 }

@@ -28,8 +28,8 @@ public class AdminController {
         return "admin";
     }
 
-    @PostMapping("admin/user/ban/{id}")
-    public String userBan(@PathVariable("id") Long id){
+    @PostMapping("/admin/user/ban/{id}")
+    public String userBan(@PathVariable("id") Long id) {
         userService.banUser(id);
         return "redirect:/admin";
     }
@@ -43,7 +43,7 @@ public class AdminController {
     }
 
     @PostMapping("/admin/user/edit")
-    public String userEdit(@RequestParam("userId") User user, @RequestParam Map<String, String> form){
+    public String userEdit(@RequestParam("userId") User user, @RequestParam Map<String, String> form) {
         userService.changeUserRoles(user, form);
         return "redirect:/admin";
     }
