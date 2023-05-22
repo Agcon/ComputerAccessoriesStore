@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/template.html :: head"> </head>
+<body>
+<div th:include="fragments/template.html"></div>
+<h4 align="center">Панель администратора</h4>
+<table border="1" style="margin-right: auto; margin-left: auto;">
+    <tr>
+        <th>Email</th>
+        <th>Номер телефона</th>
+        <th>Активность</th>
+        <th>Роли</th>
+        <th>Бан</th>
+        <th>Редактирование</th>
+        <th>Подробная информация</th>
+    </tr>
+    <tr th:each="user : ${users}">
+        <td th:text="${user.email}"></td>
+        <td th:text="${user.phoneNumber}"></td>
+        <td>
+            <span th:if="${user.active}">true</span>
+            <span th:unless="${user.active}">false</span>
+        </td>
+        <td>
+            <span th:each="role : ${user.roles}" th:text="${role}"></span>
+        </td>
+        <td>
+            <div th:if="${user.isActive()}">
+            <form th:action="@{/admin/user/ban/{id}(id=${user.id})}" method="post">
+                <input type="submit" value="Бан">
+            </form>
+            </div>
+            <div th:unless="${user.isActive()}">
+            <form th:action="@{/admin/user/ban/{id}(id=${user.id})}" method="post">
+                <input type="submit" value="Разбан">
+            </form>
+            </div>
+        </td>
+        <td><a th:href="@{/admin/user/edit/{id}(id=${user.id})}">Редактирование</a></td>
+        <td><a th:href="@{/user/{id}(id=${user.id})}">Подробная информация</a></td>
+    </tr>
+    <tr th:if="${users.isEmpty()}">
+        <td colspan="7"><h3>Пользователей нет</h3></td>
+    </tr>
+</table>
+</body>
+</html>

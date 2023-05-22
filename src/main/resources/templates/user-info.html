@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>User Information</title>
+</head>
+<body>
+<h2 align="center">Информация о пользователе</h2>
+<div style="height: 200px; width: 600px; margin-left: auto; margin-right: auto; border: 1px solid black; background-color: aqua; display: flex; justify-content: space-between; flex-direction: column;">
+  <p align="center"><strong>Email:</strong> <span th:text="${user.email}"></span></p><br>
+  <p align="center"><strong>Name:</strong> <span th:text="${user.name}"></span></p><br>
+  <p align="center"><strong>Phone Number:</strong> <span th:text="${user.phoneNumber}"></span></p>
+  <!-- Добавьте другие поля пользователя, если есть -->
+</div>
+</body>
+</html>

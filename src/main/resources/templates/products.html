@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/template.html :: head"> </head>
+<body>
+<div th:include="fragments/template.html"></div>
+<div th:if="${user.email}">
+    <h3 align="center">Добро пожаловать, <b th:text="${user.name}"></b></h3><hr>
+    <form action="/logout" method="post">
+        <input type="hidden" th:value="${_csrf.token}" name="_csrf">
+    </form>
+</div>
+<h2 align="center"><b>Список товаров</b></h2>
+<hr>
+<h4 style="text-align: center">Поиск товаров</h4>
+<form method="get" action="/" style="width: 1000px; margin-right: auto; margin-left: auto">
+    <div class="form-row">
+        <div class="form-group col-md-2">
+            <label for="searchCity">Город</label>
+            <select id="searchCity" class="form-control" name="searchCity">
+                <option value="">Выбор города</option>
+                <option value="Москва" th:selected="${searchCity == 'Москва'}">Москва</option>
+                <option value="Красноярск" th:selected="${searchCity == 'Красноярск'}">Смоленкс</option>
+                <option value="Казань" th:selected="${searchCity == 'Казань'}">Санкт-Петербург</option>
+            </select>
+        </div>
+        <div class="form-group col-md-10">
+            <label for="searchWord">Поиск по магазинам</label>
+            <input type="text" name="searchWord" th:value="${searchWord}" class="form-control" id="searchWord">
+        </div>
+        <button style="width: 100%" type="submit" class="btn btn-dark">Поиск</button>
+    </div>
+</form> <hr>
+<div th:if="${#lists.isEmpty(products)}">
+    <p>Товаров нет</p>
+</div>
+<div th:each="product : ${products}" class="card-columns">
+    <div class="card text-white bg-dark my-3 product">
+        <img th:src="@{/images/{id}(id=${product.getImages().get(0).getId()})}" class="card-img-top"/><br><br>
+        <div class="card-body">
+            <h5 class="card-title" th:text="${product.title}"></h5>
+            <p class="card-text" th:text="${product.price} + ' ' + рублей"></p>
+        </div>
+        <div class="card-footer">
+            <a th:href="@{/product/{id}(id=${product.id})}" class="product-link">Подробнее</a>
+        </div>
+    </div>
+</div>
+
+<th:block th:if="${user.isAdmin()}">
+    <hr>
+    <h3>Создать новый товар</h3>
+    <form action="/product/create" method="post" enctype="multipart/form-data">
+        Название объявления: <input type="text" name="title"/><br><br>
+        Описание объявления: <input type="textarea" name="description"/><br><br>
+        Цена: <input type="number" name="price"/><br><br>
+        Первая фотография: <input type="file" name="file1"/><br><br>
+        Вторая фотография: <input type="file" name="file2"/><br><br>
+        Третья фотография: <input type="file" name="file3"/><br><br>
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+        <input type="submit" value="Добавить товар"/>
+    </form>
+</th:block>
+</body>
+</html>
